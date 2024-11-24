@@ -1,0 +1,22 @@
+.text-highlight,
+.username{
+  color: var(--highlight-color);
+}
+
+.username{
+  font-size: 1.2em;
+}
+
+.how-to-play {
+  background-color: rgba(52, 58, 64, 0.8);
+  border: 2px solid var(--white-color);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  list-style-type: none;
+  text-align: left;
+}
+
+.how-to-play li {
+  margin-bottom: 10px;
+}
