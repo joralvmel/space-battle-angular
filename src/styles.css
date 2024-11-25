@@ -48,21 +48,6 @@ h1, p {
   max-width: 550px;
 }
 
-.container .header {
-  width: 100%;
-}
-
-.container .content {
-  width: 100%;
-  padding-top: 20px;
-}
-
-.container button {
-  margin-top: 20px;
-  height: 60px;
-  width: 300px;
-}
-
 .container form {
   width: 100%;
   max-width: 500px;
@@ -72,44 +57,13 @@ h1, p {
   height: 60px;
 }
 
-.modal-dialog {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  margin: 0 auto;
+.container .header {
+  width: 100%;
 }
 
-.modal-content {
-  background-color: rgba(52, 58, 64, 0.8);
-  color: var(--white-color);
-  border: 10px groove var(--white-color);
-  border-radius: 20px;
-}
-
-.modal-header {
-  color: var(--highlight-color);
-  border: none;
-}
-
-.modal-footer {
-  border: none;
-}
-
-.modal-body {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.close {
-  color: var(--light-gray-color);
-  &:hover {
-    color: var(--white-color);
-  }
-  &:focus {
-    outline: none;
-  }
+.container .content {
+  width: 100%;
+  padding-top: 20px;
 }
 
 .btn-primary {

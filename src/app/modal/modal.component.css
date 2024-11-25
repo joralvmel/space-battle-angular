@@ -1,0 +1,32 @@
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.modal-content {
+  background-color: rgba(52, 58, 64, 0.8);
+  color: var(--white-color);
+  border: 10px groove var(--white-color);
+  border-radius: 20px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  color: var(--highlight-color);
+  border: none;
+  position: relative;
+}
+
+.modal-body {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.modal-footer {
+  border: none;
+}

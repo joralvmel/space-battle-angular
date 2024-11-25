@@ -1,0 +1,17 @@
+<div id="appModal" class="modal" tabindex="-1" role="dialog" style="display: none;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ title }}</h5>
+        <app-button btnClass="btn-close" (buttonClick)="onCancel()">x</app-button>
+      </div>
+      <div class="modal-body">
+        <p>{{ message }}</p>
+      </div>
+      <div class="modal-footer">
+        <app-button btnClass="btn btn-secondary" (buttonClick)="onCancel()">{{ cancelButtonText }}</app-button>
+        <app-button btnClass="btn btn-primary" (buttonClick)="onConfirm()">{{ confirmButtonText }}</app-button>
+      </div>
+    </div>
+  </div>
+</div>

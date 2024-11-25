@@ -46,3 +46,15 @@
 .btn-custom:not(:disabled):not(.disabled):active:focus {
   box-shadow: 0 0 0 .2rem var(--box-shadow-highlight);
 }
+
+.btn-close {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--light-gray-color);
+}
+
+.btn-close:hover {
+  color: var(--white-color);
+}
+

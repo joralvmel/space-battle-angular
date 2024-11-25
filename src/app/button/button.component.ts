@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
-import {NgClass} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-button',
@@ -14,6 +14,7 @@ import {RouterLink} from '@angular/router';
 })
 export class ButtonComponent {
   @Input() btnClass: string = 'btn btn-primary';
-  @Input() routerLink: string = '';
+  @Input() routerLink?: string;
   @Input() disabled: boolean = false;
+  @Output() buttonClick = new EventEmitter<void>();
 }
