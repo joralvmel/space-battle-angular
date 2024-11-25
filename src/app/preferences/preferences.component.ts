@@ -3,6 +3,7 @@ import { PreferencesService } from './preferences.service';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../modal/modal.component';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-preferences',
@@ -10,7 +11,8 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     FormsModule,
-    ModalComponent
+    ModalComponent,
+    ButtonComponent
   ],
   styleUrls: ['./preferences.component.css']
 })
@@ -38,6 +40,8 @@ export class PreferencesComponent implements OnInit {
   }
 
   navigateToPlay() {
-    this.router.navigate(['/play']);
+    this.router.navigate(['/play']).catch(err => {
+      console.error('Navigation error:', err);
+    });
   }
 }
