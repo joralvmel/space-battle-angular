@@ -1,1 +1,7 @@
-<p>play works!</p>
+<div id="score">Score: {{ gameService.score | async }}</div>
+<div id="timer">Time: {{ gameService.time | async }}</div>
+<div id="game-area">
+  <app-battleship></app-battleship>
+  <app-ufo *ngFor="let ufo of (gameService.ufos | async)" [ufo]="ufo"></app-ufo>
+  <app-laser></app-laser>
+</div>

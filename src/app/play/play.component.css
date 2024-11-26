@@ -1,0 +1,27 @@
+#game-area {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 56px);
+  background: url('../../../public/assets/imgs/space-background.gif') no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+
+#score, #timer {
+  color: #fff;
+  position: absolute;
+  top: 60px;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+#score {
+  left: 10px;
+}
+
+#timer {
+  right: 10px;
+}
