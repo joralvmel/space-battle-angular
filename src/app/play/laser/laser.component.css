@@ -1,0 +1,16 @@
+.laser {
+  position: absolute;
+  width: 5px;
+  height: 20px;
+  background-color: red;
+  animation: laserGlow 1s infinite;
+}
+
+@keyframes laserGlow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
