@@ -7,8 +7,7 @@ import {RouterLink} from '@angular/router';
   templateUrl: './modal.component.html',
   standalone: true,
   imports: [
-    ButtonComponent,
-    RouterLink
+    ButtonComponent
   ],
   styleUrls: ['./modal.component.css']
 })
