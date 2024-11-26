@@ -1,0 +1,5 @@
+<div
+  id="battleship"
+  [style.left.%]="gameService.battleshipPosition | async"
+  (mousemove)="move($event)">
+</div>
