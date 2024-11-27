@@ -75,8 +75,10 @@ export class PlayComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  endGame() {
+  public endGame() {
     alert('Game Over!');
+    clearInterval(this.timerInterval);
+    this.initGame();
     // TODO Implement modal logic here
   }
 }
