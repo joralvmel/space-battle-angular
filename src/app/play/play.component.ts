@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GameService } from './services/game.service';
-import {BattleshipComponent} from './battleship/battleship.component';
-import {UfoComponent} from './ufo/ufo.component';
-import {LaserComponent} from './laser/laser.component';
-import {AsyncPipe, NgForOf} from '@angular/common';
+import { BattleshipComponent } from './battleship/battleship.component';
+import { UfoComponent } from './ufo/ufo.component';
+import { LaserComponent } from './laser/laser.component';
+import { AsyncPipe, NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-play',
@@ -18,7 +18,7 @@ import {AsyncPipe, NgForOf} from '@angular/common';
   ],
   styleUrls: ['./play.component.css']
 })
-export class PlayComponent implements OnInit {
+export class PlayComponent implements OnInit, OnDestroy {
   timerInterval: any;
 
   constructor(protected gameService: GameService) {}
@@ -27,7 +27,13 @@ export class PlayComponent implements OnInit {
     this.initGame();
   }
 
+  ngOnDestroy() {
+    clearInterval(this.timerInterval);
+  }
+
   initGame() {
+    this.resetGame();
+
     const gameTime = localStorage.getItem('gameTime');
     const numUFOs = localStorage.getItem('numUFOs');
 
@@ -39,7 +45,12 @@ export class PlayComponent implements OnInit {
     this.startTimer();
   }
 
-  // TODO Restart game
+  resetGame() {
+    this.gameService.ufos.next([]);
+    this.gameService.time.next(60);
+    this.gameService.score.next(0);
+    clearInterval(this.timerInterval);
+  }
 
   generateUfos(count: number) {
     for (let i = 0; i < count; i++) {
