@@ -1,7 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { CommonModule } from '@angular/common';
-import { UfoComponent } from '../ufo/ufo.component';
 import { PlayComponent } from '../play.component';
 
 @Component({
@@ -68,18 +67,17 @@ export class LaserComponent {
 
   private checkCollision() {
     const ufos = this.gameService.ufos.getValue();
-    const remainingLasers: { x: number; y: number; }[] = [];
+    const remainingLasers: { x: number; y: number }[] = [];
 
     this.lasers.forEach(laser => {
       const hitUfo = ufos.find(ufo =>
+        !ufo.isExploding && // Ignore if already exploding
         laser.x >= ufo.x && laser.x <= ufo.x + 5 &&
         laser.y >= ufo.y && laser.y <= ufo.y + 5
       );
 
       if (hitUfo) {
-        const ufoComponent = new UfoComponent(this.gameService);
-        ufoComponent.ufo = hitUfo;
-        ufoComponent.onHit();
+        this.gameService.markUfoAsHit(hitUfo.id);
       } else {
         remainingLasers.push(laser);
       }

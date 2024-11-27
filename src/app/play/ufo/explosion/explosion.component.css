@@ -1,0 +1,7 @@
+.explosion {
+  width: 50px;
+  height: 50px;
+  background-image: url('../../../../../public/assets/imgs/explosion.gif');
+  background-size: cover;
+  position: absolute;
+}

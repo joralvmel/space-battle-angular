@@ -1,5 +1,13 @@
 <div
   class="ufo"
+  *ngIf="!ufo.isExploding"
   [style.left.%]="ufo.x"
   [style.top.%]="ufo.y"
+  (click)="onHit()"
 ></div>
+
+<app-explosion
+  *ngIf="ufo.isExploding"
+  [x]="ufo.x"
+  [y]="ufo.y"
+></app-explosion>
