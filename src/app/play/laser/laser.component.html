@@ -1,5 +1,6 @@
 <div
-  *ngFor="let laser of lasers"
+  *ngFor="let laser of lasers | async"
   class="laser"
-  [ngStyle]="{'left.%': laser.x, 'top.%': laser.y}">
+  [style.left.%]="laser.x"
+  [style.top.%]="laser.y">
 </div>

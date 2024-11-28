@@ -1,6 +1,9 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+
+const LASER_START_Y = 90;
 
 @Component({
   selector: 'app-laser',
@@ -9,12 +12,13 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./laser.component.css'],
   imports: [CommonModule]
 })
-export class LaserComponent {
-  lasers: { x: number; y: number }[] = [];
-  private interval: any;
+export class LaserComponent implements OnDestroy {
+  lasers: Observable<{ x: number; y: number }[]>;
   private gameStarted = false;
 
   constructor(private gameService: GameService) {
+    this.lasers = this.gameService.lasers.asObservable();
+
     this.gameService.time.subscribe(time => {
       if (time === 60) {
         this.gameStarted = true;
@@ -23,11 +27,13 @@ export class LaserComponent {
 
     this.gameService.gameActive.subscribe(active => {
       if (!active) {
-        clearInterval(this.interval);
-        this.interval = null;
-        this.lasers = [];
+        this.gameService.clearLaserAnimation();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.gameService.clearLaserAnimation();
   }
 
   @HostListener('window:click', ['$event'])
@@ -46,59 +52,6 @@ export class LaserComponent {
 
   private fireLaser() {
     const x = this.gameService.battleshipPosition.getValue() + 1.1;
-    this.lasers.push({ x, y: 90 });
-
-    if (!this.interval) {
-      this.startLaserAnimation();
-    }
-  }
-
-  private startLaserAnimation() {
-    this.interval = setInterval(() => {
-      this.updateLaserPositions();
-    }, 50);
-  }
-
-  private updateLaserPositions() {
-    this.lasers = this.lasers
-      .map(laser => ({ x: laser.x, y: laser.y - 2 }))
-      .filter(laser => {
-        if (laser.y < 0) {
-          this.reduceScoreForMiss();
-          return false;
-        }
-        return true;
-      });
-    this.checkCollision();
-  }
-
-  private checkCollision() {
-    const ufos = this.gameService.ufos.getValue();
-    const remainingLasers: { x: number; y: number }[] = [];
-
-    this.lasers.forEach(laser => {
-      const hitUfo = ufos.find(ufo =>
-        !ufo.isExploding &&
-        laser.x >= ufo.x && laser.x <= ufo.x + 5 &&
-        laser.y >= ufo.y && laser.y <= ufo.y + 5
-      );
-
-      if (hitUfo) {
-        this.gameService.markUfoAsHit(hitUfo.id);
-      } else {
-        remainingLasers.push(laser);
-      }
-    });
-
-    this.lasers = remainingLasers;
-
-    if (this.gameService.ufos.getValue().length === 0) {
-      this.gameService.endGame();
-    }
-  }
-
-  private reduceScoreForMiss() {
-    const currentScore = this.gameService.score.getValue();
-    this.gameService.score.next(currentScore - 20);
+    this.gameService.addLaser({ x, y: LASER_START_Y });
   }
 }

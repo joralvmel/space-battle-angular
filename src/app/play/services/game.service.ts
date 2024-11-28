@@ -1,29 +1,45 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+
+const DEFAULT_GAME_TIME = 60;
+const DEFAULT_NUM_UFOS = 5;
+const LASER_HIT_SCORE = 100;
+const LASER_MISS_PENALTY = 20;
+const UFO_EXPLOSION_DELAY = 500;
+const TIMER_INTERVAL = 1000;
+const ANIMATION_INTERVAL = 16;
+const LASER_SPEED = 2;
+const LASER_ANIMATION_INTERVAL = 50;
+const MAX_RIGHT = 100 - (40 / window.innerWidth) * 100;
 
 @Injectable({
   providedIn: 'root',
 })
-export class GameService {
+export class GameService implements OnDestroy {
   private endGameCallback: (() => void) | null = null;
 
   score = new BehaviorSubject<number>(0);
-  time = new BehaviorSubject<number>(60);
+  time = new BehaviorSubject<number>(DEFAULT_GAME_TIME);
   ufos = new BehaviorSubject<{ id: number; x: number; y: number; isExploding: boolean; direction: 'left' | 'right'; speed: number; }[]>([]);
+  lasers = new BehaviorSubject<{ x: number; y: number }[]>([]);
   battleshipPosition = new BehaviorSubject<number>(50);
   gameActive = new BehaviorSubject<boolean>(true);
   timerInterval: ReturnType<typeof setInterval> | undefined;
   animationFrameId: ReturnType<typeof setInterval> | undefined;
+  laserInterval: ReturnType<typeof setInterval> | undefined;
   lastUpdateTime: number = 0;
 
+  ngOnDestroy() {
+    this.clearIntervals();
+  }
+
   markUfoAsHit(id: number) {
-    const current = this.ufos.getValue();
-    const updated = current.map(ufo =>
+    const updated = this.ufos.getValue().map(ufo =>
       ufo.id === id ? { ...ufo, isExploding: true } : ufo
     );
     this.ufos.next(updated);
-    this.score.next(this.score.getValue() + 100);
-    setTimeout(() => this.removeUfo(id), 500);
+    this.score.next(this.score.getValue() + LASER_HIT_SCORE);
+    setTimeout(() => this.removeUfo(id), UFO_EXPLOSION_DELAY);
   }
 
   removeUfo(id: number) {
@@ -40,19 +56,17 @@ export class GameService {
 
   resetGame() {
     this.ufos.next([]);
-    this.time.next(60);
+    this.time.next(DEFAULT_GAME_TIME);
     this.score.next(0);
     this.gameActive.next(true);
   }
 
   initGame() {
     this.resetGame();
-
     const gameTime = localStorage.getItem('gameTime');
     const numUFOs = localStorage.getItem('numUFOs');
-
-    this.time.next(gameTime ? parseInt(gameTime, 10) : 60);
-    this.generateUfos(numUFOs ? parseInt(numUFOs, 10) : 5);
+    this.time.next(gameTime ? parseInt(gameTime, 10) : DEFAULT_GAME_TIME);
+    this.generateUfos(numUFOs ? parseInt(numUFOs, 10) : DEFAULT_NUM_UFOS);
   }
 
   generateUfos(count: number) {
@@ -61,10 +75,9 @@ export class GameService {
   }
 
   private createUfo(id: number) {
-    const maxRight = 100 - (40 / window.innerWidth) * 100;
     return {
       id,
-      x: Math.random() * maxRight,
+      x: Math.random() * MAX_RIGHT,
       y: Math.random() * 40,
       direction: Math.random() < 0.5 ? 'left' as 'left' : 'right' as 'right',
       speed: 5 + Math.random() * 5,
@@ -81,12 +94,10 @@ export class GameService {
         clearInterval(this.timerInterval);
         endGameCallback();
       }
-    }, 1000);
+    }, TIMER_INTERVAL);
   }
 
   startAnimationLoop(updateUfoPositionsCallback: (elapsedTime: number) => void) {
-    const intervalTime = 16;
-
     this.animationFrameId = setInterval(() => {
       const timestamp = performance.now();
       if (!this.lastUpdateTime) {
@@ -95,7 +106,7 @@ export class GameService {
       const elapsedTime = timestamp - this.lastUpdateTime;
       updateUfoPositionsCallback(elapsedTime);
       this.lastUpdateTime = timestamp;
-    }, intervalTime);
+    }, ANIMATION_INTERVAL);
   }
 
   clearIntervals() {
@@ -105,11 +116,12 @@ export class GameService {
     if (this.animationFrameId) {
       clearInterval(this.animationFrameId);
     }
+    if (this.laserInterval) {
+      clearInterval(this.laserInterval);
+    }
   }
 
   updateUfoPositions(elapsedTime: number) {
-    const maxRight = 100 - (40 / window.innerWidth) * 100;
-
     const ufos = this.ufos.getValue().map(ufo => {
       const distance = ufo.speed * (elapsedTime / 1000);
       if (ufo.direction === 'left') {
@@ -119,7 +131,7 @@ export class GameService {
         }
       } else {
         ufo.x += distance;
-        if (ufo.x >= maxRight) {
+        if (ufo.x >= MAX_RIGHT) {
           ufo.direction = 'left';
         }
       }
@@ -149,5 +161,79 @@ export class GameService {
 
   setEndGameCallback(callback: () => void) {
     this.endGameCallback = callback;
+  }
+
+  addLaser(laser: { x: number; y: number }) {
+    const lasers = this.lasers.getValue();
+    lasers.push(laser);
+    this.lasers.next(lasers);
+
+    if (!this.laserInterval) {
+      this.startLaserAnimation();
+    }
+  }
+
+  private startLaserAnimation() {
+    this.laserInterval = setInterval(() => {
+      this.updateLaserPositions();
+    }, LASER_ANIMATION_INTERVAL);
+  }
+
+  clearLaserAnimation() {
+    if (this.laserInterval) {
+      clearInterval(this.laserInterval);
+      this.laserInterval = undefined;
+    }
+  }
+
+  private updateLaserPositions() {
+    const lasers = this.lasers.getValue()
+      .map(laser => this.moveLaser(laser))
+      .filter(laser => this.isLaserInBounds(laser));
+    this.lasers.next(lasers);
+    this.checkCollision();
+  }
+
+  private moveLaser(laser: { x: number; y: number }) {
+    return { x: laser.x, y: laser.y - LASER_SPEED };
+  }
+
+  private isLaserInBounds(laser: { x: number; y: number }) {
+    if (laser.y < 0) {
+      this.reduceScoreForMiss();
+      return false;
+    }
+    return true;
+  }
+
+  private checkCollision() {
+    const ufos = this.ufos.getValue();
+    const lasers = this.lasers.getValue();
+    const remainingLasers: { x: number; y: number }[] = [];
+
+    lasers.forEach(laser => {
+      const hitUfo = ufos.find(ufo =>
+        !ufo.isExploding &&
+        laser.x >= ufo.x && laser.x <= ufo.x + 5 &&
+        laser.y >= ufo.y && laser.y <= ufo.y + 5
+      );
+
+      if (hitUfo) {
+        this.markUfoAsHit(hitUfo.id);
+      } else {
+        remainingLasers.push(laser);
+      }
+    });
+
+    this.lasers.next(remainingLasers);
+
+    if (this.ufos.getValue().length === 0 && this.endGameCallback) {
+      this.endGameCallback();
+    }
+  }
+
+  private reduceScoreForMiss() {
+    const currentScore = this.score.getValue();
+    this.score.next(currentScore - LASER_MISS_PENALTY);
   }
 }
