@@ -19,7 +19,9 @@ import { AsyncPipe, NgForOf } from '@angular/common';
   styleUrls: ['./play.component.css']
 })
 export class PlayComponent implements OnInit, OnDestroy {
-  timerInterval: any;
+  timerInterval: ReturnType<typeof setInterval> | undefined;
+  animationFrameId: ReturnType<typeof setInterval> | undefined;
+  lastUpdateTime: number = 0;
 
   constructor(protected gameService: GameService) {}
 
@@ -28,7 +30,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    clearInterval(this.timerInterval);
+    this.clearIntervals();
   }
 
   initGame() {
@@ -43,13 +45,21 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.gameService.time.next(time);
     this.generateUfos(ufos);
     this.startTimer();
+    this.startAnimationLoop();
   }
 
   resetGame() {
     this.gameService.ufos.next([]);
     this.gameService.time.next(60);
     this.gameService.score.next(0);
-    clearInterval(this.timerInterval);
+    this.clearIntervals();
+  }
+
+  public endGame() {
+    alert('Game Over!');
+    this.clearIntervals();
+    this.initGame();
+    // TODO Implement modal logic here
   }
 
   generateUfos(count: number) {
@@ -57,10 +67,40 @@ export class PlayComponent implements OnInit, OnDestroy {
       const ufo = {
         id: i,
         x: Math.random() * 90,
-        y: Math.random() * 50
+        y: Math.random() * 50,
+        direction: Math.random() < 0.5 ? 'left' as 'left' : 'right' as 'right',
+        speed: 5 + Math.random() * 5,
+        isExploding: false
       };
       this.gameService.addUfo(ufo);
     }
+  }
+
+  updateUfoPositions(elapsedTime: number) {
+    const ufoWidth = 40;
+    const maxRight = 100 - (ufoWidth / window.innerWidth) * 100;
+    const oscillationSpeed = 0.005;
+
+    const ufos = this.gameService.ufos.getValue().map(ufo => {
+      const distance = ufo.speed * (elapsedTime / 1000);
+      if (ufo.direction === 'left') {
+        ufo.x -= distance;
+        if (ufo.x <= 0) {
+          ufo.direction = 'right';
+        }
+      } else {
+        ufo.x += distance;
+        if (ufo.x >= maxRight) {
+          ufo.direction = 'left';
+        }
+      }
+
+      const timeFactor = performance.now() * oscillationSpeed;
+      const phaseOffset = ufo.id * Math.PI / 4;
+      ufo.y += Math.sin(timeFactor + phaseOffset) * 0.1;
+      return ufo;
+    });
+    this.gameService.ufos.next(ufos);
   }
 
   startTimer() {
@@ -75,10 +115,26 @@ export class PlayComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  public endGame() {
-    alert('Game Over!');
-    clearInterval(this.timerInterval);
-    this.initGame();
-    // TODO Implement modal logic here
+  startAnimationLoop() {
+    const intervalTime = 16;
+
+    this.animationFrameId = setInterval(() => {
+      const timestamp = performance.now();
+      if (!this.lastUpdateTime) {
+        this.lastUpdateTime = timestamp;
+      }
+      const elapsedTime = timestamp - this.lastUpdateTime;
+      this.updateUfoPositions(elapsedTime);
+      this.lastUpdateTime = timestamp;
+    }, intervalTime);
+  }
+
+  clearIntervals() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+    if (this.animationFrameId) {
+      clearInterval(this.animationFrameId);
+    }
   }
 }

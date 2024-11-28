@@ -7,10 +7,10 @@ import { BehaviorSubject } from 'rxjs';
 export class GameService {
   score = new BehaviorSubject<number>(0);
   time = new BehaviorSubject<number>(60);
-  ufos = new BehaviorSubject<{ id: number; x: number; y: number; isExploding: boolean }[]>([]);
+  ufos = new BehaviorSubject<{ id: number; x: number; y: number; isExploding: boolean; direction: 'left' | 'right';  speed: number;  }[]>([]);
   battleshipPosition = new BehaviorSubject<number>(50);
 
-  addUfo(ufo: { id: number; x: number; y: number }) {
+  addUfo(ufo: { id: number; x: number; y: number; direction: 'left' | 'right';  speed: number;  }) {
     const current = this.ufos.getValue();
     this.ufos.next([...current, { ...ufo, isExploding: false }]);
   }

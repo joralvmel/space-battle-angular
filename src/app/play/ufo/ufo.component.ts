@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { GameService } from '../services/game.service';
-import {NgIf} from '@angular/common';
-import {ExplosionComponent} from './explosion/explosion.component';
+import { NgIf } from '@angular/common';
+import { ExplosionComponent } from './explosion/explosion.component';
 
 @Component({
   selector: 'app-ufo',
@@ -20,7 +20,6 @@ export class UfoComponent {
 
   onHit() {
     this.gameService.markUfoAsHit(this.ufo.id);
-
     const currentScore = this.gameService.score.getValue();
     this.gameService.score.next(currentScore + 100);
   }
