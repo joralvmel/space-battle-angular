@@ -3,6 +3,8 @@ import { GameService } from '../services/game.service';
 import { NgIf } from '@angular/common';
 import { ExplosionComponent } from './explosion/explosion.component';
 
+const UFO_HIT_SCORE = 100;
+
 @Component({
   selector: 'app-ufo',
   templateUrl: './ufo.component.html',
@@ -20,7 +22,6 @@ export class UfoComponent {
 
   onHit() {
     this.gameService.markUfoAsHit(this.ufo.id);
-    const currentScore = this.gameService.score.getValue();
-    this.gameService.score.next(currentScore + 100);
+    this.gameService.score.next(this.gameService.score.getValue() + UFO_HIT_SCORE);
   }
 }
