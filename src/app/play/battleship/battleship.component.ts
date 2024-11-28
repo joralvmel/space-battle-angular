@@ -28,19 +28,23 @@ export class BattleshipComponent {
 
   @HostListener('window:mousemove', ['$event'])
   move(event: MouseEvent) {
-    const boundedX = this.calculateBoundedX(event.clientX);
-    this.gameService.battleshipPosition.next(boundedX);
+    if (this.gameService.gameActive.getValue()) {
+      const boundedX = this.calculateBoundedX(event.clientX);
+      this.gameService.battleshipPosition.next(boundedX);
+    }
   }
 
   @HostListener('window:keydown', ['$event'])
   onKeydown(event: KeyboardEvent) {
-    const currentPosition = this.gameService.battleshipPosition.getValue();
-    const maxRight = this.calculateMaxRight();
+    if (this.gameService.gameActive.getValue()) {
+      const currentPosition = this.gameService.battleshipPosition.getValue();
+      const maxRight = this.calculateMaxRight();
 
-    if (event.key === 'ArrowLeft') {
-      this.gameService.battleshipPosition.next(Math.max(currentPosition - 1, 0));
-    } else if (event.key === 'ArrowRight') {
-      this.gameService.battleshipPosition.next(Math.min(currentPosition + 1, maxRight));
+      if (event.key === 'ArrowLeft') {
+        this.gameService.battleshipPosition.next(Math.max(currentPosition - 1, 0));
+      } else if (event.key === 'ArrowRight') {
+        this.gameService.battleshipPosition.next(Math.min(currentPosition + 1, maxRight));
+      }
     }
   }
 }

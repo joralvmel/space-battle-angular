@@ -1,7 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { GameService } from '../services/game.service';
 import { CommonModule } from '@angular/common';
-import { PlayComponent } from '../play.component';
 
 @Component({
   selector: 'app-laser',
@@ -15,24 +14,32 @@ export class LaserComponent {
   private interval: any;
   private gameStarted = false;
 
-  constructor(private gameService: GameService, private playComponent: PlayComponent) {
+  constructor(private gameService: GameService) {
     this.gameService.time.subscribe(time => {
       if (time === 60) {
         this.gameStarted = true;
+      }
+    });
+
+    this.gameService.gameActive.subscribe(active => {
+      if (!active) {
+        clearInterval(this.interval);
+        this.interval = null;
+        this.lasers = [];
       }
     });
   }
 
   @HostListener('window:click', ['$event'])
   onLeftClick(event: MouseEvent) {
-    if (event.button === 0 && this.gameStarted) {
+    if (event.button === 0 && this.gameStarted && this.gameService.gameActive.getValue()) {
       this.fireLaser();
     }
   }
 
   @HostListener('window:keydown', ['$event'])
   onSpacePress(event: KeyboardEvent) {
-    if (event.code === 'Space' && this.gameStarted) {
+    if (event.code === 'Space' && this.gameStarted && this.gameService.gameActive.getValue()) {
       this.fireLaser();
     }
   }
@@ -71,7 +78,7 @@ export class LaserComponent {
 
     this.lasers.forEach(laser => {
       const hitUfo = ufos.find(ufo =>
-        !ufo.isExploding && // Ignore if already exploding
+        !ufo.isExploding &&
         laser.x >= ufo.x && laser.x <= ufo.x + 5 &&
         laser.y >= ufo.y && laser.y <= ufo.y + 5
       );
@@ -86,7 +93,7 @@ export class LaserComponent {
     this.lasers = remainingLasers;
 
     if (this.gameService.ufos.getValue().length === 0) {
-      this.playComponent.endGame();
+      this.gameService.endGame();
     }
   }
 

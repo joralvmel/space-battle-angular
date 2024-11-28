@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {ButtonComponent} from '../button/button.component';
-import {RouterLink} from '@angular/router';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-modal',
@@ -36,6 +35,10 @@ export class ModalComponent {
       modalElement.setAttribute('aria-hidden', 'false');
       modalElement.style.display = 'block';
     }
+  }
+
+  hideModal(): void {
+    this.closeModal();
   }
 
   onConfirm(): void {

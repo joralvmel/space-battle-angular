@@ -5,3 +5,12 @@
   <app-ufo *ngFor="let ufo of (gameService.ufos | async)" [ufo]="ufo"></app-ufo>
   <app-laser></app-laser>
 </div>
+
+<app-modal
+  [title]="modalTitle"
+  [message]="modalMessage"
+  [confirmButtonText]="'Play Again'"
+  [cancelButtonText]="'Records'"
+  (confirm)="playAgain()"
+  (cancel)="navigateToRecords()"
+></app-modal>
