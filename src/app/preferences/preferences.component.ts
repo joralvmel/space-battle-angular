@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../modal/modal.component';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
+import { GameService } from '../play/services/game.service';
 
 @Component({
   selector: 'app-preferences',
@@ -24,7 +25,7 @@ export class PreferencesComponent implements OnInit {
 
   @ViewChild(ModalComponent) modal!: ModalComponent;
 
-  constructor(private preferencesService: PreferencesService, private router: Router) {}
+  constructor(private preferencesService: PreferencesService, private router: Router, private gameService: GameService) {}
 
   ngOnInit(): void {
     const preferences = this.preferencesService.loadPreferences();
@@ -40,6 +41,7 @@ export class PreferencesComponent implements OnInit {
   }
 
   navigateToPlay() {
+    this.gameService.gameActive.next(false);
     this.router.navigate(['/play']).catch(err => {
       console.error('Navigation error:', err);
     });

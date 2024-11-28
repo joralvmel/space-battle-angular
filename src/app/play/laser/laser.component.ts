@@ -14,16 +14,9 @@ const LASER_START_Y = 90;
 })
 export class LaserComponent implements OnDestroy {
   lasers: Observable<{ x: number; y: number }[]>;
-  private gameStarted = false;
 
   constructor(private gameService: GameService) {
     this.lasers = this.gameService.lasers.asObservable();
-
-    this.gameService.time.subscribe(time => {
-      if (time === 60) {
-        this.gameStarted = true;
-      }
-    });
 
     this.gameService.gameActive.subscribe(active => {
       if (!active) {
@@ -38,14 +31,14 @@ export class LaserComponent implements OnDestroy {
 
   @HostListener('window:click', ['$event'])
   onLeftClick(event: MouseEvent) {
-    if (event.button === 0 && this.gameStarted && this.gameService.gameActive.getValue()) {
+    if (event.button === 0 && this.gameService.gameActive.getValue() && !event.defaultPrevented) {
       this.fireLaser();
     }
   }
 
   @HostListener('window:keydown', ['$event'])
   onSpacePress(event: KeyboardEvent) {
-    if (event.code === 'Space' && this.gameStarted && this.gameService.gameActive.getValue()) {
+    if (event.code === 'Space' && this.gameService.gameActive.getValue()) {
       this.fireLaser();
     }
   }
