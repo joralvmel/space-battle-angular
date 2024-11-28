@@ -29,6 +29,9 @@ export class GameService implements OnDestroy {
   laserInterval: ReturnType<typeof setInterval> | undefined;
   lastUpdateTime: number = 0;
 
+  private playSong = new Audio('assets/audio/play-song.mp3');
+  private gameOverSound = new Audio('assets/audio/game-over.wav');
+
   ngOnDestroy() {
     this.clearIntervals();
   }
@@ -39,6 +42,7 @@ export class GameService implements OnDestroy {
     );
     this.ufos.next(updated);
     this.score.next(this.score.getValue() + LASER_HIT_SCORE);
+    new Audio('assets/audio/hit.wav').play();
     setTimeout(() => this.removeUfo(id), UFO_EXPLOSION_DELAY);
   }
 
@@ -52,6 +56,9 @@ export class GameService implements OnDestroy {
   endGame() {
     this.clearIntervals();
     this.gameActive.next(false);
+    this.playSong.pause();
+    this.playSong.currentTime = 0;
+    this.gameOverSound.play();
   }
 
   resetGame() {
@@ -67,6 +74,7 @@ export class GameService implements OnDestroy {
     const numUFOs = localStorage.getItem('numUFOs');
     this.time.next(gameTime ? parseInt(gameTime, 10) : DEFAULT_GAME_TIME);
     this.generateUfos(numUFOs ? parseInt(numUFOs, 10) : DEFAULT_NUM_UFOS);
+    this.playSong.play();
   }
 
   generateUfos(count: number) {
@@ -167,6 +175,7 @@ export class GameService implements OnDestroy {
     const lasers = this.lasers.getValue();
     lasers.push(laser);
     this.lasers.next(lasers);
+    new Audio('assets/audio/laser.wav').play();
 
     if (!this.laserInterval) {
       this.startLaserAnimation();
@@ -201,6 +210,7 @@ export class GameService implements OnDestroy {
   private isLaserInBounds(laser: { x: number; y: number }) {
     if (laser.y < 0) {
       this.reduceScoreForMiss();
+      new Audio('assets/audio/miss.wav').play();
       return false;
     }
     return true;
@@ -235,5 +245,10 @@ export class GameService implements OnDestroy {
   private reduceScoreForMiss() {
     const currentScore = this.score.getValue();
     this.score.next(currentScore - LASER_MISS_PENALTY);
+  }
+
+  stopPlaySong() {
+    this.playSong.pause();
+    this.playSong.currentTime = 0;
   }
 }

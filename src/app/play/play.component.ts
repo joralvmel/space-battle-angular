@@ -45,6 +45,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.cleanup();
+    this.gameService.stopPlaySong();
   }
 
   private initializeGame() {
