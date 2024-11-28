@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">{{ title }}</h5>
-        <app-button btnClass="btn-close" (buttonClick)="onCancel()">x</app-button>
+        <app-button *ngIf="showCloseButton" btnClass="btn-close" (buttonClick)="onCancel()">x</app-button>
       </div>
       <div class="modal-body">
         <p>{{ message }}</p>

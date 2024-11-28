@@ -11,6 +11,7 @@
   [message]="modalMessage"
   [confirmButtonText]="'Play Again'"
   [cancelButtonText]="'Records'"
+  [showCloseButton]="false"
   (confirm)="playAgain()"
   (cancel)="navigateToRecords()"
 ></app-modal>
