@@ -40,7 +40,8 @@ export class LoginComponent {
         next: (response) => {
           const token = response.headers.get('Authorization');
           if (token && token.startsWith('Bearer ')) {
-            localStorage.setItem('token', token);
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('username', username);
             this.modalTitle = 'Login Successful';
             this.modalMessage = 'You have successfully logged in.';
             this.modal.showModal();

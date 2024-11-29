@@ -51,7 +51,16 @@ export class RegisterComponent implements OnInit {
       next: response => {
         this.showModal('Success', 'User registered successfully!', () => {
           this.registerService.loginAfterRegister(username, password).subscribe({
-            next: () => this.router.navigate(['']),
+            next: loginResponse => {
+              const token = loginResponse.headers.get('Authorization');
+              if (token && token.startsWith('Bearer ')) {
+                localStorage.setItem('authToken', token);
+                localStorage.setItem('username', username);
+                this.router.navigate(['']);
+              } else {
+                this.errorMessage = 'Login failed';
+              }
+            },
             error: () => this.errorMessage = 'Login failed'
           });
         });
