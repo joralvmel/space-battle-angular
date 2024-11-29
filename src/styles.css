@@ -39,6 +39,23 @@ h1, p {
   }
 }
 
+.error-message-container {
+  position: absolute;
+  width: 100%;
+  top: 62px;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: rgba(248, 215, 218, 0.5);
+  border-color: #f5c6cb;
+  padding: 4px;
+}
+
 .container {
   display: flex;
   justify-content: center;
@@ -79,6 +96,14 @@ h1, p {
   &:focus,
   &:not(:disabled):not(.disabled):active:focus {
     box-shadow: 0 0 0 .2rem var(--box-shadow-primary);
+  }
+  &:disabled {
+    background-color: var(--dark-gray-color);
+    border-color: var(--dark-gray-color);
+    &:hover {
+      background-color: var(--dark-gray-color);
+      border-color: var(--dark-gray-color);
+    }
   }
 }
 
