@@ -1,5 +1,5 @@
 import { Component, HostListener, OnDestroy } from '@angular/core';
-import { GameService } from '../services/game.service';
+import { GameService } from '../../services/game.service';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 

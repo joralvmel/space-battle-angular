@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PreferencesService } from './preferences.service';
+import { PreferencesService } from '../services/preferences.service';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from '../modal/modal.component';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
-import { GameService } from '../play/services/game.service';
+import { GameService } from '../services/game.service';
 
 @Component({
   selector: 'app-preferences',

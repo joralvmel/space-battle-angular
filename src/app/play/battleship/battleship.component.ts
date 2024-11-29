@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { GameService } from '../services/game.service';
+import { GameService } from '../../services/game.service';
 import { AsyncPipe } from '@angular/common';
 
 const BATTLESHIP_WIDTH = 40;

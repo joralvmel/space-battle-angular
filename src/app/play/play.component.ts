@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { GameService } from './services/game.service';
+import { GameService } from '../services/game.service';
 import { BattleshipComponent } from './battleship/battleship.component';
 import { UfoComponent } from './ufo/ufo.component';
 import { LaserComponent } from './laser/laser.component';

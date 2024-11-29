@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { GameService } from '../services/game.service';
+import { GameService } from '../../services/game.service';
 import { NgIf } from '@angular/common';
 import { ExplosionComponent } from './explosion/explosion.component';
 
