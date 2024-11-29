@@ -62,7 +62,9 @@ export class GameService implements OnDestroy {
   }
 
   resetGame() {
+    this.clearIntervals();
     this.ufos.next([]);
+    this.lasers.next([]);
     this.time.next(DEFAULT_GAME_TIME);
     this.score.next(0);
     this.gameActive.next(true);
@@ -83,11 +85,13 @@ export class GameService implements OnDestroy {
   }
 
   private createUfo(id: number) {
+    const direction: 'left' | 'right' = Math.random() < 0.5 ? 'left' : 'right';
+
     return {
       id,
       x: Math.random() * MAX_RIGHT,
       y: Math.random() * 40,
-      direction: Math.random() < 0.5 ? 'left' as 'left' : 'right' as 'right',
+      direction,
       speed: 5 + Math.random() * 5,
       isExploding: false
     };
@@ -133,20 +137,16 @@ export class GameService implements OnDestroy {
     const ufos = this.ufos.getValue().map(ufo => {
       const distance = ufo.speed * (elapsedTime / 1000);
       if (ufo.direction === 'left') {
-        ufo.x -= distance;
-        if (ufo.x <= 0) {
-          ufo.direction = 'right';
-        }
+        ufo.x = Math.max(0, ufo.x - distance);
+        if (ufo.x <= 0) ufo.direction = 'right';
       } else {
-        ufo.x += distance;
-        if (ufo.x >= MAX_RIGHT) {
-          ufo.direction = 'left';
-        }
+        ufo.x = Math.min(MAX_RIGHT, ufo.x + distance);
+        if (ufo.x >= MAX_RIGHT) ufo.direction = 'left';
       }
 
       const timeFactor = performance.now() * 0.005;
       const phaseOffset = ufo.id * Math.PI / 4;
-      ufo.y += Math.sin(timeFactor + phaseOffset) * 0.1;
+      ufo.y = Math.max(0, Math.min(ufo.y + Math.sin(timeFactor + phaseOffset) * 0.1, 40));
       return ufo;
     });
     this.ufos.next(ufos);
@@ -164,7 +164,7 @@ export class GameService implements OnDestroy {
       finalScore -= (ufoCount - 1) * 50;
     }
 
-    return finalScore;
+    return Math.max(finalScore, 0);
   }
 
   setEndGameCallback(callback: () => void) {
