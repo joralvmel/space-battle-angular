@@ -1,1 +1,47 @@
-<p>login works!</p>
+<div class="container mt-5">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input
+        id="username"
+        type="text"
+        class="form-control"
+        formControlName="username"
+        [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+        required
+      />
+      <div class="invalid-feedback" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+        Username is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input
+        id="password"
+        type="password"
+        class="form-control"
+        formControlName="password"
+        [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        required
+      />
+      <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        Password is required.
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Log In</button>
+  </form>
+
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+    {{ errorMessage }}
+  </div>
+
+  <app-modal
+    [title]="modalTitle"
+    [message]="modalMessage"
+    [confirmButtonText]="'OK'"
+    [showCloseButton]="false"
+    [showCancelButton]="false"
+    (confirm)="handleModalConfirm()"
+  ></app-modal>
+</div>
