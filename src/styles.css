@@ -147,31 +147,3 @@ h1, p {
 .section {
   padding: 20px;
 }
-
-.records-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 1em;
-  text-align: left;
-}
-
-.records-table th,
-.records-table td {
-  padding: 12px 15px;
-  border: 1px solid #444444;
-}
-
-.records-table th {
-  background-color: #555555;
-  color: var(--white-color);
-  font-weight: bold;
-}
-
-.records-table tr:nth-child(even) {
-  background-color: #333333;
-}
-
-.records-table tr:hover {
-  background-color: #444;
-}

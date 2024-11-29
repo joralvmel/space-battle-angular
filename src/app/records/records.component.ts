@@ -1,11 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { RecordsService } from '../services/records.service';
+import { NgForOf, NgIf, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-records',
-  imports: [],
   templateUrl: './records.component.html',
-  styleUrl: './records.component.css'
+  standalone: true,
+  imports: [
+    NgIf,
+    NgForOf,
+    DatePipe
+  ],
+  styleUrls: ['./records.component.css']
 })
-export class RecordsComponent {
+export class RecordsComponent implements OnInit {
+  records: any[] = [];
 
+  constructor(private recordsService: RecordsService) {}
+
+  ngOnInit(): void {
+    this.recordsService.fetchTopTenScores().subscribe(
+      data => this.records = data,
+      error => console.error('Error fetching data:', error)
+    );
+  }
 }
