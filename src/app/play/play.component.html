@@ -13,8 +13,8 @@
   [cancelButtonText]="'Records'"
   [extraButtonText]="'Save'"
   [showCloseButton]="false"
-  [showExtraButton]="true"
+  [showExtraButton]="finalScore > 0 && isAuthorized"
   (confirm)="playAgain()"
-  (cancel)="navigateToRecords()"
-  (extra)="saveRecord()"
+(cancel)="navigateToRecords()"
+(extra)="saveRecord()"
 ></app-modal>
