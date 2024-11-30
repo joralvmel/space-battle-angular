@@ -17,11 +17,14 @@ export class ModalComponent {
   @Input() message: string = '';
   @Input() confirmButtonText: string = 'OK';
   @Input() cancelButtonText: string = 'Cancel';
+  @Input() extraButtonText: string = 'Extra';
   @Input() showCloseButton: boolean = true;
   @Input() showCancelButton: boolean = true;
+  @Input() showExtraButton: boolean = false;
 
   @Output() confirm = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
+  @Output() extra = new EventEmitter<void>();
 
   closeModal(): void {
     const modalElement = document.getElementById('appModal');
@@ -53,5 +56,9 @@ export class ModalComponent {
   onCancel(): void {
     this.cancel.emit();
     this.closeModal();
+  }
+
+  onExtra(): void {
+    this.extra.emit();
   }
 }

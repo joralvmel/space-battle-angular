@@ -82,4 +82,8 @@ export class PlayComponent implements OnInit, OnDestroy {
       console.error('Navigation error:', err);
     });
   }
+
+  saveRecord() {
+    console.log(`${this.gameService.calculateFinalScore()} score saved`);
+  }
 }

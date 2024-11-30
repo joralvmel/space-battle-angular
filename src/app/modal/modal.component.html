@@ -9,8 +9,13 @@
         <p>{{ message }}</p>
       </div>
       <div class="modal-footer">
-        <app-button *ngIf="showCancelButton" btnClass="btn btn-secondary" (buttonClick)="onCancel()">{{ cancelButtonText }}</app-button>
-        <app-button btnClass="btn btn-primary" (buttonClick)="onConfirm()">{{ confirmButtonText }}</app-button>
+        <div class="left-buttons">
+          <app-button *ngIf="showExtraButton" btnClass="btn btn-tertiary" (buttonClick)="onExtra()">{{ extraButtonText }}</app-button>
+        </div>
+        <div class="right-buttons">
+          <app-button *ngIf="showCancelButton" btnClass="btn btn-secondary" (buttonClick)="onCancel()">{{ cancelButtonText }}</app-button>
+          <app-button btnClass="btn btn-primary" (buttonClick)="onConfirm()">{{ confirmButtonText }}</app-button>
+        </div>
       </div>
     </div>
   </div>

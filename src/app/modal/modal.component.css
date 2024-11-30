@@ -28,5 +28,16 @@
 }
 
 .modal-footer {
+  display: flex;
+  justify-content: space-between;
   border: none;
+}
+
+.modal-footer .left-buttons {
+  display: flex;
+}
+
+.modal-footer .right-buttons {
+  display: flex;
+  gap: 10px;
 }

@@ -1,5 +1,6 @@
 .btn {
   color: var(--white-color);
+  font-size: 12px;
   padding: 10px 20px;
   border-radius: 5px;
   transition: transform 0.3s ease;
@@ -23,6 +24,16 @@
 .btn-secondary:hover {
   background-color: var(--hover-secondary-color);
   border-color: var(--active-secondary-color);
+}
+
+.btn-tertiary {
+  background-color: var(--tertiary-color);
+  border: 1px solid var(--tertiary-color);
+}
+
+.btn-tertiary:hover {
+  background-color: var(--hover-tertiary-color);
+  border-color: var(--active-tertiary-color);
 }
 
 .btn-custom {
