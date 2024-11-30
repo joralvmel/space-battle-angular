@@ -54,7 +54,8 @@ export class RegisterComponent implements OnInit {
             next: loginResponse => {
               const token = loginResponse.headers.get('Authorization');
               if (token && token.startsWith('Bearer ')) {
-                localStorage.setItem('authToken', token);
+                const tokenWithoutPrefix = token.substring(7);
+                localStorage.setItem('authToken', tokenWithoutPrefix);
                 localStorage.setItem('username', username);
                 this.router.navigate(['']);
               } else {
