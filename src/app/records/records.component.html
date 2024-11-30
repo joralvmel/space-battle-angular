@@ -1,29 +1,59 @@
-<div class="container">
-  <div *ngIf="records.length > 0">
-    <table class="records-table table table-striped">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Username</th>
-        <th>Points</th>
-        <th>UFOs</th>
-        <th>Time (seconds)</th>
-        <th>Date</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let record of records; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ record.username }}</td>
-        <td>{{ record.punctuation }} points</td>
-        <td>{{ record.ufos }}</td>
-        <td>{{ record.disposedTime }}</td>
-        <td>{{ record.recordDate | date }}</td>
-      </tr>
-      </tbody>
-    </table>
+  <div class="tables-container">
+    <div *ngIf="records.length > 0" class="table-wrapper">
+      <h3>Global Top 10 Scores</h3>
+      <table class="records-table table table-striped">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Points</th>
+          <th>UFOs</th>
+          <th>Time</th>
+          <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let record of records; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ record.username }}</td>
+          <td>{{ record.punctuation }}</td>
+          <td>{{ record.ufos }}</td>
+          <td>{{ record.disposedTime }}</td>
+          <td>{{ record.recordDate | date }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="userRecords.length > 0" class="table-wrapper">
+      <h3>Your Top 10 Scores</h3>
+      <table class="records-table table table-striped">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Points</th>
+          <th>UFOs</th>
+          <th>Time</th>
+          <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let record of userRecords; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ record.username }}</td>
+          <td>{{ record.punctuation }}</td>
+          <td>{{ record.ufos }}</td>
+          <td>{{ record.disposedTime }}</td>
+          <td>{{ record.recordDate | date }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div *ngIf="records.length === 0">
     <p>No records found.</p>
   </div>
-</div>
+  <div *ngIf="userRecords.length === 0">
+    <p>Login and Play to display your records!</p>
+  </div>
+
