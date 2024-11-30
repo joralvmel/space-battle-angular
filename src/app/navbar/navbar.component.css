@@ -1,8 +1,8 @@
 .navbar {
-  background-color: rgba(52, 58, 64, 0.6) !important;
+  background-color: var(--transparent-nav-bar) !important;
 }
 
 .nav-item .nav-link:focus {
   font-weight: bold;
-  color: #c9c903 !important;
+  color: var(--highlight-color) !important;
 }

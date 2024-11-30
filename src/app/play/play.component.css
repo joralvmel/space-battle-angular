@@ -9,12 +9,12 @@
 
 
 #score, #timer {
-  color: #fff;
+  color: var(--white-color);
   position: absolute;
   top: 60px;
   font-size: 1.5em;
   font-weight: bold;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  text-shadow: var(--text-shadow);
   z-index: 1;
 }
 

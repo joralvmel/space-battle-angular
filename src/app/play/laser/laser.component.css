@@ -2,7 +2,7 @@
   position: absolute;
   width: 5px;
   height: 20px;
-  background-color: red;
+  background-color: var(--laser-color);
   animation: laserGlow 1s infinite;
 }
 

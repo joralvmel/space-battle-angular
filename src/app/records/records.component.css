@@ -1,3 +1,7 @@
+h3 {
+  text-align: center;
+}
+
 .tables-container {
   display: flex;
   flex-wrap: wrap;
@@ -31,36 +35,27 @@
   padding: 12px 15px;
   border: 1px solid var(--dark-gray-color);
   font-size: 10px;
+  text-align: left;
+  vertical-align: middle;
 }
 
 .records-table th {
-  background-color: var(--dark-gray-color);
+  background-color: var(--transparent-dark-gray);
   color: var(--white-color);
   font-weight: bold;
 }
 
 .records-table tr:nth-child(odd) {
-  background-color: transparent;
+  background-color: var(--transparent-white);
   color: var(--white-color);
 }
 
 .records-table tr:nth-child(even) {
-  background-color: var(--dark-gray-color);
+  background-color: var(--transparent-light-gray);
   color: var(--white-color);
 }
 
 .records-table tr:hover {
-  background-color: var(--light-gray-color);
+  background-color: var(--transparent-highlight);
 }
 
-.user-records-table th {
-  background-color: var(--secondary-color);
-}
-
-.user-records-table tr:nth-child(odd) {
-  background-color: var(--light-gray-color);
-}
-
-.user-records-table tr:nth-child(even) {
-  background-color: var(--dark-gray-color);
-}

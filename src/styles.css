@@ -9,6 +9,7 @@
   --hover-tertiary-color: #0056b3;
   --active-tertiary-color: #004085;
   --highlight-color: #C9C903;
+  --laser-color: #ff0000;
   --black-color: #1E1E1E;
   --white-color: #FFFFFF;
   --gray-color: #495057;
@@ -17,6 +18,13 @@
   --box-shadow-primary: rgba(0, 167, 69, 0.25);
   --box-shadow-secondary: rgba(220, 53, 69, 0.25);
   --box-shadow-highlight: rgba(201, 201, 3, 0.5);
+  --transparent-dark-gray: rgba(113, 115, 117, 0.8);
+  --transparent-light-gray: rgba(113, 115, 117, 0.4);
+  --transparent-highlight: rgba(201, 201, 201, 0.3);
+  --transparent-white: rgba(255, 255, 255, 0.1);
+  --transparent-nav-bar:  rgba(52, 58, 64, 0.6);
+  --transparent-modal: rgba(52, 58, 64, 0.8);
+  --text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 body {
