@@ -21,4 +21,9 @@ export class RegisterService {
     const headers = new HttpHeaders({ 'Accept': 'application/json' });
     return this.http.get(this.loginUrl, { params: { username, password }, headers, observe: 'response' });
   }
+
+  checkUsernameExists(username: string): Observable<any> {
+    const url = `${this.registerUrl}/${username}`;
+    return this.http.get(url, { observe: 'response' });
+  }
 }

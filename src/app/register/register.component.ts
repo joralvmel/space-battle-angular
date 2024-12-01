@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { RegisterService } from '../services/register.service';
 import { ModalComponent } from '../modal/modal.component';
-import {NgIf} from '@angular/common';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -35,6 +35,28 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  onUsernameBlur(): void {
+    const username = this.registerForm.get('username')?.value;
+    if (username) {
+      this.registerService.checkUsernameExists(username).subscribe({
+        next: response => {
+          if (response.status === 200) {
+            this.errorMessage = 'Username already exists.';
+          } else {
+            this.errorMessage = '';
+          }
+        },
+        error: error => {
+          if (error.status === 404) {
+            this.errorMessage = '';
+          } else {
+            this.errorMessage = 'An unexpected error occurred.';
+          }
+        }
+      });
+    }
+  }
+
   onSubmit(): void {
     if (this.registerForm.invalid) {
       return;
@@ -47,6 +69,25 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
+    this.registerService.checkUsernameExists(username).subscribe({
+      next: response => {
+        if (response.status === 200) {
+          this.errorMessage = 'Username already exists.';
+        } else {
+          this.registerUser(username, email, password);
+        }
+      },
+      error: error => {
+        if (error.status === 404) {
+          this.registerUser(username, email, password);
+        } else {
+          this.errorMessage = 'An unexpected error occurred.';
+        }
+      }
+    });
+  }
+
+  registerUser(username: string, email: string, password: string): void {
     this.registerService.registerUser(username, email, password).subscribe({
       next: response => {
         this.showModal('Success', 'User registered successfully!', () => {
@@ -55,7 +96,6 @@ export class RegisterComponent implements OnInit {
               const token = loginResponse.headers.get('Authorization');
               if (token && token.startsWith('Bearer ')) {
                 const tokenWithoutPrefix = token.substring(7);
-                localStorage.setItem('authToken', tokenWithoutPrefix);
                 localStorage.setItem('username', username);
                 this.router.navigate(['']);
               } else {

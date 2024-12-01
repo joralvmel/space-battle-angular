@@ -7,8 +7,7 @@
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="username">Name:</label>
-      <input id="username" type="text" class="form-control" formControlName="username" required>
-    </div>
+      <input id="username" type="text" class="form-control" formControlName="username" required (blur)="onUsernameBlur()">    </div>
     <div class="form-group">
       <label for="email">Email:</label>
       <input id="email" type="email" class="form-control" formControlName="email" required>
