@@ -1,59 +1,52 @@
-# SpaceBattleAngular
+# Space Battle
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.1.
+**Space Battle** is a web-based game where players destroy alien invaders and earn points. The game includes a navigation bar, a modal for displaying messages, and a user authentication system.
 
-## Development server
+---
 
-To start a local development server, run:
+## Features
 
-```bash
-ng serve
-```
+- **Responsive Design**
+  The game is optimized for various screen sizes and devices.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **User Authentication**
+  Users can register, log in, and log out to personalize their experience.
 
-## Code scaffolding
+- **Dynamic Content**
+  The navigation bar and modals are dynamically managed using Angular.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Custom Styles**
+  Enjoy a unique look and feel with custom-designed styles.
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Technologies
 
-```bash
-ng generate --help
-```
+- **Angular**
+  For building the front-end application and managing game's visuals.
 
-## Building
+- **TypeScript**
+  For writing scalable and maintainable code.
 
-To build the project run:
+- **HTML5**
+  For structuring the web pages.
 
-```bash
-ng build
-```
+- **CSS3**
+  For styling the game and making it visually appealing.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- **Bootstrap 4**
+  To ensure a responsive and modern layout.
 
-## Running unit tests
+- **RxJS**
+  For reactive programming with observables.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- **Angular Router**
+  For navigation and routing within the application.
 
-```bash
-ng test
-```
+- **HttpClient**
+  For making HTTP requests to the backend.
 
-## Running end-to-end tests
+- **Backend API**
+  The application connects to a backend API for user authentication and saving game records.
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
